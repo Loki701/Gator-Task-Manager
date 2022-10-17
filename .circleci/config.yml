@@ -22,7 +22,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies and build project
-          command: -r requirements.txt
+          command: make
       - sonarcloud/scan
 
   build-and-test: # This is the name of the job, feel free to change it to better match what you're trying to do!
