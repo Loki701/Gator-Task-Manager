@@ -9,6 +9,7 @@ orbs:
   # Orb commands and jobs help you with common scripting around a language/tool
   # so you dont have to copy and paste it everywhere.
   # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
+  sonarcloud: sonarsource/sonarcloud@1.0.3
   python: circleci/python@1.5.0
 
 # Define a job to be invoked later in a workflow.
@@ -37,6 +38,7 @@ jobs:
           name: Run tests
           # This assumes pytest is installed via the install-package step above
           command: pytest
+      -sonarcloud/scan
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
