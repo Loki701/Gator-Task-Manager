@@ -1,5 +1,15 @@
 const mongoose = require('mongoose');
 
+const eventSchema = mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    description: String,
+    time: Number,
+    offset: Number
+})
+
 const userSchema = mongoose.Schema({
     username: {
         type: String,
@@ -16,7 +26,9 @@ const userSchema = mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    }
+    },
+    events: [eventSchema]
+
 });
 
 userSchema.virtual('id').get(function (){
@@ -27,4 +39,5 @@ userSchema.set('toJSON', {
 });
 
 exports.User = mongoose.model('User', userSchema);
+exports.Event = mongoose.model('Event', eventSchema);
 exports.userSchema = userSchema;

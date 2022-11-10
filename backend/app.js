@@ -3,32 +3,31 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const usersRouter = require('./routers/users');
-const authJwt = require('./helper/jwt');
+//const authJwt = require('./helper/jwt');
 const errorHandler = require('./helper/error-handler')
 
 const app = express();
 const cors = require('cors');
-require('dotenv/config');
+const dotenv = require('dotenv');
+dotenv.config()
+const api = process.env.API_URL;
 
 
 app.use(cors());
+//allow all http request
 app.options("*", cors());
 
-const api = process.env.API_URL;
 
 //middleware
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
-app.use(authJwt,(req, res)=>{
-    if (!req.auth.admin) return res.sendStatus(401);
-    res.sendStatus(200);
-});
-//app.use(errorHandler);
+app.use(errorHandler);
 
 //Routers
 app.use(`${api}/users`, usersRouter)
 
 
+//Database connection
 mongoose.connect(process.env.CONNECTION_STRING,{
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -41,6 +40,7 @@ mongoose.connect(process.env.CONNECTION_STRING,{
     console.log(err);
 })
 
+//app connection
 app.listen(3000, ()=>{
     console.log("Server is running http://localhost:3000");
 })
