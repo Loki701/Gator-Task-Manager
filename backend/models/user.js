@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
-const eventSchema = mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    description: String,
-    time: Number,
-    offset: Number
-})
+// const eventSchema = mongoose.Schema({ 
+//     title: {
+//         type: String,
+//         required: true
+//     },
+//     description: String,
+//     time: Number,
+//     offset: Number
+// })
 
 const userSchema = mongoose.Schema({
     username: {
@@ -27,17 +27,30 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    events: [eventSchema]
+    events: [{
+        title: {
+            type: String,
+            required: true
+        },
+        description: String,
+        time: Number,
+        offset: Number
+    }],
+    moodRecord: [{
+        mood: Number,
+        date: Number
+    }]
 
 });
 
-userSchema.virtual('id').get(function (){
-    return this._id.toHexString();
-});
-userSchema.set('toJSON', {
-    virtuals: true,
-});
+// create virtual identifier
+// userSchema.virtual('id').get(function (){
+//     return this._id.toHexString();
+// });
+// userSchema.set('toJSON', {
+//     virtuals: true,
+// });
 
 exports.User = mongoose.model('User', userSchema);
-exports.Event = mongoose.model('Event', eventSchema);
+//exports.Event = mongoose.model('Event', eventSchema);
 exports.userSchema = userSchema;
