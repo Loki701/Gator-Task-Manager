@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
+const dayjs = require('dayjs');
 
 // checks is user exist
 router.get('/validateUser', async (req, res) =>{
@@ -25,12 +25,12 @@ router.post('/register', async (req, res) =>{
     if(!user){
         return res.status(400).send({success: false})
     }
-    return res.send({success: true});
+    return res.status(200).send({success: true});
 })
 // Authenticate users credentials 
 router.post('/login', async (req, res) =>{
     const user = await User.findOne({username: req.body.username});
-
+    console.log("Inside login api")
     if(!user){
         return res.status(400).send({success: false, issue:'username'});
     }
@@ -48,6 +48,14 @@ router.post('/login', async (req, res) =>{
             refreshToken: refreshToken
         })
         newRefreshToken = await newRefreshToken.save();
+
+        //create cookie
+        res.cookie("api-auth", accessToken, {
+            secure: false,
+            httpOnly: true,
+            expires: dayjs().add(7, "days").toDate()
+        });
+        console.log("creating cookie!");
 
         return res.status(200).send({success: true, accessToken: accessToken, refreshToken: refreshToken});
     }else{
@@ -90,9 +98,9 @@ async function isUserValid(username){
     const isUserValid = await User.findOne({username: username});
     
     if(!isUserValid){
-        return res.send(false);
+        return false;
     } 
-    return res.send(true);
+    return true;
 }
 
 module.exports = router;

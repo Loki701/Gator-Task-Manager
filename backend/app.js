@@ -13,7 +13,11 @@ dotenv.config()
 const api = process.env.API_URL;
 
 
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3001",
+    methods: "*",
+    credentials: true
+}));
 //allow all http request
 app.options("*", cors());
 
