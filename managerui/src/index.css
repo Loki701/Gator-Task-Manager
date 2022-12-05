@@ -172,6 +172,9 @@ button {
   margin-top: 2%;
 }
 .list-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 40vw;
   color: black;
   font-weight: bold;
@@ -196,4 +199,9 @@ button {
 
 .mood-title{
   margin-top: 2%;
+}
+
+
+.signUpButton-active:hover{
+  cursor: pointer;
 }

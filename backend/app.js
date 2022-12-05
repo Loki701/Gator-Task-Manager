@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const usersRouter = require('./routers/users')
 const authRouter = require('./routers/authentication')
 const errorHandler = require('./helper/error-handler')
+const cookies = require('cookie-parser')
 
 const app = express();
 const cors = require('cors');
@@ -25,6 +26,7 @@ app.options("*", cors());
 //middleware
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
+app.use(cookies());
 app.use(errorHandler);
 
 

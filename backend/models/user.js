@@ -17,7 +17,6 @@ const userSchema = mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
     },
     passwordHash: {
         type: String,
@@ -33,7 +32,8 @@ const userSchema = mongoose.Schema({
             required: true
         },
         description: String,
-        time: Number,
+        date: String,
+        time: String,
         offset: Number
     }],
     moodRecord: [{

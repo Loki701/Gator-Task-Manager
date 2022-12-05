@@ -12,11 +12,12 @@ router.get('/validateUser', async (req, res) =>{
 })
 // Register User
 router.post('/register', async (req, res) =>{
+    console.log("in register api")
+    
     if(!isUserValid(req.body.username)) return res.status(400).send({success: false})
 
     let user = new User({
         username: req.body.username,
-        email: req.body.email,
         passwordHash: bcrypt.hashSync(req.body.password, 10)
     })
 
@@ -31,6 +32,7 @@ router.post('/register', async (req, res) =>{
 router.post('/login', async (req, res) =>{
     const user = await User.findOne({username: req.body.username});
     console.log("Inside login api")
+
     if(!user){
         return res.status(400).send({success: false, issue:'username'});
     }
@@ -47,17 +49,17 @@ router.post('/login', async (req, res) =>{
         let newRefreshToken = new RefreshToken({
             refreshToken: refreshToken
         })
-        newRefreshToken = await newRefreshToken.save();
+        //newRefreshToken = await newRefreshToken.save();
 
         //create cookie
         res.cookie("api-auth", accessToken, {
-            secure: false,
+            secure: true,
             httpOnly: true,
             expires: dayjs().add(7, "days").toDate()
         });
         console.log("creating cookie!");
 
-        return res.status(200).send({success: true, accessToken: accessToken, refreshToken: refreshToken});
+        return res.status(200).send({success: true});
     }else{
         return res.status(400).send({success: false, issue:'password'})
     }
@@ -91,12 +93,12 @@ function generateAccessToken(user){
     return jwt.sign(
         {userId: user.id}, 
         process.env.ACCESS_TOKEN_SECRET,
-        {expiresIn: '30m'}
+        {expiresIn: '2h'}
     );
 }
 async function isUserValid(username){
     const isUserValid = await User.findOne({username: username});
-    
+    console.log(isUserValid)
     if(!isUserValid){
         return false;
     } 

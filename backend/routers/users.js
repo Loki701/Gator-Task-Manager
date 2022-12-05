@@ -4,6 +4,8 @@ const router = express.Router();
 
 const authenticateToken = require('../helper/authenticateToken');
 
+//var cookieParser = require('cookie-parser');
+
 //get events
 router.get('/getEvents', authenticateToken, async (req, res) =>{
     let eventList = (await User.findById(req.user.userId)).events;
@@ -12,6 +14,17 @@ router.get('/getEvents', authenticateToken, async (req, res) =>{
         res.status(500).json({success: false});
     } 
     res.status(200).send(eventList);
+})
+//test cookie
+router.get('/test', authenticateToken, async(req, res)=>{
+    console.log("we in test api")
+    // getCookies(function(err,res){
+    //     if(!err){
+    //         console.log(res);
+    //     }
+    // })
+    console.log('Cookies: ', req.cookies['api-auth'])
+    res.status(200).send("success")
 })
 //get event
 router.get('/getEventById', authenticateToken, async (req, res) =>{
@@ -22,7 +35,7 @@ router.get('/getEventById', authenticateToken, async (req, res) =>{
     res.status(200).send(event);
 })
 //get mood history
-router.get('/getEvents', authenticateToken, async (req, res) =>{
+router.get('/getMoodRecord', authenticateToken, async (req, res) =>{
     let moodRecord = (await User.findById(req.user.userId)).moodRecord;
     
     if(!moodRecord){
@@ -40,11 +53,14 @@ router.get('/userInfo', authenticateToken, async (req, res) =>{
 })
 //add event 
 router.post('/addEvent', authenticateToken, async (req, res) =>{
+    
     const user = await User.findById(req.user.userId)
     //console.log(user.events.find({title: 'Event 1'}))
+    console.log(user.username)
     user.events.push({
         title: req.body.title,
         description: req.body.description,
+        date: req.body.date,
         time: req.body.time,
         offset: req.body.offset
     })
@@ -72,9 +88,10 @@ router.post('/addMood', authenticateToken, async (req, res) =>{
 })
 //remove event
 router.delete('/deleteEvent', authenticateToken, async (req, res) =>{
-    const user = await User.findById(req.user.userId)
-    const eventStatus = user.events.pull({_id: req.body.eventId});
-    await user.save()
+    console.log("im here")
+    //const user = await User.findById(req.body.eventId)
+    const eventStatus = req.user.events.pull({_id: req.body.eventId});
+    await req.user.save()
     if(!eventStatus){
         return res.status(400).json({success: false})
     }
@@ -95,5 +112,6 @@ router.patch('/editEventById', authenticateToken, async (req, res) =>{
     } 
     res.status(200).send(event);
 })
+
 
 module.exports = router;

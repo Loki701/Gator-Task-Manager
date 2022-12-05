@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect} from 'react';
 import logo from '../images/logo.png';
 import {Link} from 'react-router-dom';
-//import {Navigate} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 //import {AuthProvider} from '../context/AuthProvider'
 
 import axios from '../api/axios';
@@ -71,7 +71,7 @@ const Login = () => {
                 <h1 className='title'>Gator Manager</h1>
             </div>
             {success ? (
-                <h1>Loged in</h1>
+                <Navigate to="/Home"/>
             ) : (
                 
                 <section>
