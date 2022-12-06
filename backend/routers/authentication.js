@@ -30,7 +30,7 @@ router.post('/register', async (req, res) =>{
 })
 // Authenticate users credentials 
 router.post('/login', async (req, res) =>{
-    let usr = req.body.username
+    let usr = req.body.username.toString();
     const user = await User.findOne({username: usr});
 
     if(!user){
@@ -84,7 +84,7 @@ router.post('/token', async (req,res) =>{
 // Delete refresh token
 router.delete('/logout', async (req,res) =>{
     // Delete token from list
-    const token = await RefreshToken.deleteOne({refreshToken: req.body.refreshToken})
+    const token = await RefreshToken.deleteOne({refreshToken: req.body.refreshToken.toString()})
     if(!token) return res.sendStatus(401) 
     
     return res.sendStatus(204)
@@ -97,7 +97,7 @@ function generateAccessToken(user){
     );
 }
 async function isUserValid(username){
-    const isUserValid = await User.findOne({username: username});
+    const isUserValid = await User.findOne({username: username.toString()});
     console.log(isUserValid)
     if(!isUserValid){
         return false;

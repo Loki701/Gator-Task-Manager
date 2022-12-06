@@ -114,7 +114,7 @@ router.patch('/editEventById', authenticateToken, async (req, res) =>{
     if(!event){
         res.status(500).json({success: false});
     } 
-    res.status(200).send(event);
+    res.status(200).json({success: true});
 })
 
 
