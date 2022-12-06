@@ -4,22 +4,23 @@ orbs:
   heroku: circleci/heroku@1.2.6
 
 jobs:
-  build_and_test:
-    executor: node/default
+  build_and_test: # this can be any name you choose
+    executor: node/default # use the default executor defined within the orb
     steps:
       - checkout
       - node/install-packages:
-          pkg-manager: yarn
+          pkg-manager: npm
       - run:
-          command: yarn test
+          command: npm run test
           name: Run tests
       - run:
-          command: yarn build
+          command: npm run build
           name: Build app
       - persist_to_workspace:
           root: ~/project
           paths:
             - .
+
 
   deploy: # this can be any name you choose
     executor: heroku/default
