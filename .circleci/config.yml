@@ -5,10 +5,11 @@ orbs:
 
 jobs:
   build_and_test: # this can be any name you choose
-    executor: node/default # use the default executor defined within the orb
     working_directory: ~/managerui
+    executor: node/default # use the default executor defined within the orb
     steps:
-      - checkout
+      - checkout:
+          path: ~/managerui
       - node/install-packages:
           pkg-manager: npm
       - run:
