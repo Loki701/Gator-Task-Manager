@@ -30,8 +30,8 @@ router.post('/register', async (req, res) =>{
 })
 // Authenticate users credentials 
 router.post('/login', async (req, res) =>{
-    const user = await User.findOne({username: req.body.username});
-    console.log("Inside login api")
+    let usr = req.body.username
+    const user = await User.findOne({username: usr});
 
     if(!user){
         return res.status(400).send({success: false, issue:'username'});
@@ -66,7 +66,7 @@ router.post('/login', async (req, res) =>{
 })
 // Request new access token
 router.post('/token', async (req,res) =>{
-    const refreshToken = req.body.token
+    const refreshToken = (req.body.token).toString();
     if(refreshToken == null) return res.sendStatus(401).json({success: false})
     //Chech if refresh token database has refresh token
     const refreshTokenStatus = await RefreshToken.findOne({refreshToken: refreshToken})
