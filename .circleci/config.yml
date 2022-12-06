@@ -5,13 +5,11 @@ orbs:
 
 jobs:
   build_and_test: # this can be any name you choose
-    working_directory: ~/backend
+    app-dir: ~/backend
     executor: node/default # use the default executor defined within the orb
     steps:
-      - checkout:
-          path: ~/backend
+      - checkout
       - node/install-packages:
-          app-dir: ~/backend
           pkg-manager: npm
       - run:
           command: npm run test
@@ -19,7 +17,11 @@ jobs:
       - run:
           command: npm run build
           name: Build app
-      
+      - persist_to_workspace:
+          root: ~/managerui
+          paths:
+            - .
+  
 
 
   deploy: # this can be any name you choose
