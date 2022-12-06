@@ -10,6 +10,7 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
+          app-dir: ~/project/managerui/
       - run:
           command: npm run test
           name: Run tests
@@ -17,7 +18,7 @@ jobs:
           command: npm run build
           name: Build app
       - persist_to_workspace:
-          root: ~/managerui
+          root: ~/project
           paths:
             - .
   
@@ -27,7 +28,7 @@ jobs:
     executor: heroku/default
     steps:
       - attach_workspace:
-          at: ~/backend
+          at: ~/project
       - heroku/deploy-via-git:
           force: true # force push when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
 
