@@ -10,7 +10,7 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-          app-dir: ~/project/managerui/
+          app-dir: ~/project/backend/
       - run:
           command: npm run test
           name: Run tests
