@@ -5,6 +5,7 @@ orbs:
 
 jobs:
   build_and_test: # this can be any name you choose
+    working_directory: ~/backend
     executor: node/default # use the default executor defined within the orb
     steps:
       - checkout:
