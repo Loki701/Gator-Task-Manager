@@ -11,6 +11,7 @@ jobs:
       - checkout:
           path: ~/backend
       - node/install-packages:
+          app-dir: ~/backend
           pkg-manager: npm
       - run:
           command: npm run test
