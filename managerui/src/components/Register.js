@@ -67,7 +67,7 @@ const Register = () => {
             //console.log(JSON.stringify(response))
             
             //clear state and controlled inputs
-            if(response?.data?.success == true){
+            if(response?.data?.success === true){
                 setSuccess(true);
                 setUser('');
                 setPwd('');
@@ -89,7 +89,7 @@ const Register = () => {
     }
 
     return (
-        <>
+        <div className='register-container'>
             <div className='title-context'>
                 <img className='logo' alt='logo' src={logo} />
                 <h1 className='title'>Gator Manager</h1>
@@ -100,7 +100,7 @@ const Register = () => {
             ) : (
                 <section>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                    <h1>Register</h1>
+                    <h1 className="search__input">Register</h1>
                     <form onSubmit={handleSubmit}>
                         <label htmlFor="username">
                             Username:
@@ -172,8 +172,9 @@ const Register = () => {
                             <FontAwesomeIcon icon={faInfoCircle} />
                             Must match the first password input field.
                         </p>
-
-                        <button className={!validName || !validPwd || !validMatch ? 'signUpButton':'signUpButton-active'} disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
+                        <div className="context-button">
+                            <button className={!validName || !validPwd || !validMatch ? 'signUpButton':'signUpButton-active'} disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
+                        </div>
                     </form>
                     <p>
                         Already registered?<br />
@@ -184,7 +185,7 @@ const Register = () => {
                     </p>
                 </section>
             )}
-        </>
+        </div>
     )
 }
 

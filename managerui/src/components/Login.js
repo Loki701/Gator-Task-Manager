@@ -65,7 +65,7 @@ const Login = () => {
 
 
     return (
-        <>
+        <div className='homepage-container'>
             <div className='title-context'>
                 <img className='logo' src={logo} />
                 <h1 className='title'>Gator Manager</h1>
@@ -100,7 +100,7 @@ const Login = () => {
                             required
                         />
                         <div className='context-button'>
-                        <button className='button' >Sign In</button>
+                        <button className='singin-button' >Sign In</button>
                         </div>
                     </form>
                     <p>
@@ -112,7 +112,7 @@ const Login = () => {
                 </section>
                 
             )}
-        </>
+        </div>
     )
 }
 

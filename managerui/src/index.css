@@ -20,11 +20,22 @@ body {
 
 .App {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh; 
   padding: 1rem 0.5rem;
+}
+.homepage-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.register-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .title-context{
   margin-bottom: 5%;
@@ -32,7 +43,6 @@ body {
   width: 100%;
   align-items: center;
   justify-content: center;
-  
 }
 .title{
   font-size: 4rem;
@@ -73,13 +83,18 @@ form {
   margin-top: 2%;
   text-align: center;
 }
-.button{
+button{
   background: #4E9CAF;
   border-radius: 10px;
   color: white;
   font-weight: bold;
-  line-height: 10%;
+  line-height: 100%;
+  width: 35%;
   text-decoration: none;
+}
+
+.updatebutton{
+  box-shadow: 3px 5px 10px #3bbbc5;
 }
 
 a, a:visited {
@@ -88,7 +103,6 @@ a, a:visited {
 
 input[type="text"],
 input[type="password"],
-.button,
 button,
 textarea {
   font-family: 'Nunito', sans-serif;
@@ -97,19 +111,19 @@ textarea {
   border-radius: 0.5rem;
 }
 
-label,
-.button,
-button {
+label{
   margin-top: 1rem;
 }
 
-.button, button {
+button {
   padding: .5rem;
 }
 
-.button:hover{
+button:hover{
   cursor: pointer;
+  color: #000;
 }
+
 
 .instructions {
     font-size: 0.75rem;
@@ -157,7 +171,6 @@ button {
 }
 
 .home{
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -166,25 +179,45 @@ button {
 .search__input{
   text-align: center;
 }
-.list{
+.list-container{
   text-align: center;
   list-style: none;
   margin-top: 2%;
 }
-.list-item{
+.list{
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  width: 40vw;
+  width: 35vw;
   color: black;
   font-weight: bold;
-  background-color: white;
   border-radius: 10px;
-  margin-bottom: 10px;
-  box-shadow: 3px 2px 8px #51ced6;
+  margin-bottom: 1.5%;
 }
-.list-item:hover{
-  cursor: pointer;
+.event-dropdown{
+  display: none;
+}
+.event-dropdown-active{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.updatebutton-container{
+  margin-top: 3%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.list-item-details{
+  width: 100%;
+  border-style: none;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 3px 9px 20px #3bbbc5;
+  
+}
+.list-item-button{
+  
 }
 .moodTracker{
   display: flex;
@@ -201,7 +234,52 @@ button {
   margin-top: 2%;
 }
 
+.signUpButton:hover{
+  cursor: default;
+  color: white;
+}
+.signUpButton{
+  opacity: .4;
+}
+.addeventButton-container{
+  display: flex;
+}
+.addevent-button{
+  width: 100%;
+}
 
-.signUpButton-active:hover{
+.home-footer{
+  position:static;
+  left: 0;
+  bottom: 2%;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logout{
+  position: fixed;
+  right: 2%;
+  top: 2%;
+  text-decoration: none;
+}
+.logout:hover{
   cursor: pointer;
+  background-color: #3bbbc5;
+  border-radius: 50%;
+  box-shadow: 3px 9px 20px #3bbbc5;
+  color: #000;
+  font-weight: bold;
+}
+.edit-title{
+  text-align: center;
+}
+.edit-form{
+  display: flex;
+  flex-direction: column;
+  margin-top: 2%;
+  color: white;
 }

@@ -1,60 +1,110 @@
 import { useRef, useState, useEffect, useContext } from 'react';
-import logo from '../images/logo.png';
-//import Time from 'react-time'
-import { Navigate, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
-const ADDEVENT_URL = '/api/users/addEvent';
-const AddEvent = () => {
-    const toDay = new Date().toISOString().substring(0, 10);
-    const toTime = new Date().toISOString().substring(12, 16);
+import { useNavigate } from 'react-router-dom';
+
+const DELETE_URL = 'api/users/deleteEvent';
+const EDITEVENT_URL = 'api/users/editEventById';
+
+const Event = (props) =>{
+    const [dropStatus, setDropStatus] = useState(false);
+    const [edit, setEdit] = useState(false)
+    const navigate = useNavigate();
+
+    //
     const [title, setTitle] = useState('');
     const [titleFocus, setTitleFocus] = useState(false);
     const [description, setDesc] = useState('');
     const [descriptionFocus, setDescriptionFocus] = useState(false);
-    const [date, setDate] = useState(toDay);
+    const [date, setDate] = useState();
     const [dateFocus, setDateFocus] = useState(false);
     const [time, setTime] = useState();
     const [timeFocus, setTimeFocus] = useState(false);
     const [offset, setOffset] = useState(0);
     const [offsetFocus, setOffsetFocus] = useState(false);
-    const navigate = useNavigate();
 
-   
-    const handleSubmit = async (e) => {
+    
+    const handleEditSubmit = async (e) =>{
+        let eventId = props.event._id
         try {
-            const response = await axios.post(ADDEVENT_URL,
-            JSON.stringify({ title, description, date, time, offset}),
+            const response = await axios.patch(EDITEVENT_URL,
+                JSON.stringify({
+                    eventId,
+                    title,
+                    description,
+                    date,
+                    time,
+                    offset
+                }),
             {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
             // TODO: remove console.logs before deployment
-            console.log(JSON.stringify(response?.data));
-            navigate('/Home')
+            //console.log(JSON.stringify(response?.data));
             //console.log(JSON.stringify(response))
-    
+ 
         } catch (err) {
             if (!err?.response) {
                 console.log('No Server Response');
             } else if (err.response?.status === 409) {
                 console.log('Username Taken');
             } else {
-                console.log('Registration Failed')
+                console.log('401')
             }
         }
     }
-    const handleCancel = () =>{
-        navigate('/Home')
+    const handleEditCancel = () =>{
+        setEdit(false)
+        setDropStatus(false)
+    }
+
+
+
+    const handleEdit = async (e, eventId) => {
+        setEdit(true)
+
+    }
+    const handleEventClick = ()=>{
+        setDropStatus(!dropStatus)
+        setEdit(false)
+    } 
+    const handleDelete = async (e) => {
+        let eventId = props.event._id
+        try {
+            const response = await axios.post(DELETE_URL,
+                JSON.stringify({eventId}),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true 
+            });
+            // TODO: remove console.logs before deployment
+            //console.log(JSON.stringify(response?.data));
+            console.log(JSON.stringify(response))
+            window.location.reload(false)
+ 
+        } catch (err) {
+            if (!err?.response) {
+                console.log('No Server Response');
+            } else if (err.response?.status === 409) {
+                console.log('Username Taken');
+            } else {
+                console.log('401')
+            }
+        }
     }
     return(
-        <div className="AddEventContext">
-            
-            <div className='title-context'>
-                <img className='logo' src={logo} />
-                <h1 className='title'>Gator Manager</h1>
-            </div>
-            <div className='home' onSubmit={handleSubmit}>
-            <label htmlFor="Title:">Title:</label>
+        <li key ={props.index} className='list'>
+            <button onClick={handleEventClick} className='list-item-details'>
+                <div className='list-item-title'>
+                    {props.event.title}
+                </div>
+                <div className='list-item-date'>
+                    {props.event.date}
+                </div>
+            </button>
+            {edit?
+            <div className='edit-form'>
+                <label htmlFor="Title:">Title:</label>
             <input
                 type="text"
                 id="title"
@@ -114,12 +164,19 @@ const AddEvent = () => {
                 
             </select>
             <div className='addeventButton-container'>
-                <button className='addevent-button' onClick={handleSubmit}>Add</button>
-                <button className='addevent-button' onClick={handleCancel}>Cancel</button>
+                <button className='addevent-button' onClick={handleEditSubmit}>Save</button>
+                <button className='addevent-button' onClick={handleEditCancel}>Cancel</button>
             </div>
+            </div>:
+            <div className={dropStatus?'event-dropdown-active':'event-dropdown'}>
+                <div className='updatebutton-container'>
+                <button className='updatebutton' onClick={e=>handleEdit(e)}>Edit</button>
+                <button className='updatebutton' onClick={e => handleDelete(e)}>Delete</button>
+                </div>
             </div>
-        </div>
-    );
+            }
+        </li>
+    )
 }
 
-export default AddEvent;
+export default Event;

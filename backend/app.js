@@ -19,6 +19,13 @@ app.use(cors({
     methods: "*",
     credentials: true
 }));
+
+// app.options('/*', (req, res) => {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length,Server,Date,access-control-allow-methods,access-control-allow-origin");
+//     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS,PATCH");
+//     res.send('send some thing whatever')
+//   })
 //allow all http request
 app.options("*", cors());
 

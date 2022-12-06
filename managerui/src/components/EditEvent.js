@@ -3,8 +3,9 @@ import logo from '../images/logo.png';
 //import Time from 'react-time'
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
-const ADDEVENT_URL = '/api/users/addEvent';
-const AddEvent = () => {
+const EDITEVENT_URL = 'api/users/editEventById';
+
+const EditEvent = (props) => {
     const toDay = new Date().toISOString().substring(0, 10);
     const toTime = new Date().toISOString().substring(12, 16);
     const [title, setTitle] = useState('');
@@ -21,25 +22,26 @@ const AddEvent = () => {
 
    
     const handleSubmit = async (e) => {
+        let id = props.eventId;
+        console.log('id: ', id)
         try {
-            const response = await axios.post(ADDEVENT_URL,
-            JSON.stringify({ title, description, date, time, offset}),
+            const response = await axios.patch(EDITEVENT_URL,
+                JSON.stringify({}),
             {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
             // TODO: remove console.logs before deployment
-            console.log(JSON.stringify(response?.data));
-            navigate('/Home')
+            //console.log(JSON.stringify(response?.data));
             //console.log(JSON.stringify(response))
-    
+ 
         } catch (err) {
             if (!err?.response) {
                 console.log('No Server Response');
             } else if (err.response?.status === 409) {
                 console.log('Username Taken');
             } else {
-                console.log('Registration Failed')
+                console.log('401')
             }
         }
     }
@@ -48,11 +50,11 @@ const AddEvent = () => {
     }
     return(
         <div className="AddEventContext">
-            
             <div className='title-context'>
                 <img className='logo' src={logo} />
                 <h1 className='title'>Gator Manager</h1>
             </div>
+            <h1 className='edit-title'>Edit Event</h1>
             <div className='home' onSubmit={handleSubmit}>
             <label htmlFor="Title:">Title:</label>
             <input
@@ -114,7 +116,7 @@ const AddEvent = () => {
                 
             </select>
             <div className='addeventButton-container'>
-                <button className='addevent-button' onClick={handleSubmit}>Add</button>
+                <button className='addevent-button' onClick={handleSubmit}>Save</button>
                 <button className='addevent-button' onClick={handleCancel}>Cancel</button>
             </div>
             </div>
@@ -122,4 +124,4 @@ const AddEvent = () => {
     );
 }
 
-export default AddEvent;
+export default EditEvent;

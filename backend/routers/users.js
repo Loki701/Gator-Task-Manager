@@ -56,7 +56,7 @@ router.post('/addEvent', authenticateToken, async (req, res) =>{
     
     const user = await User.findById(req.user.userId)
     //console.log(user.events.find({title: 'Event 1'}))
-    console.log(user.username)
+    console.log(req.user.username)
     user.events.push({
         title: req.body.title,
         description: req.body.description,
@@ -87,12 +87,15 @@ router.post('/addMood', authenticateToken, async (req, res) =>{
     return res.status(200).json({success: true});
 })
 //remove event
-router.delete('/deleteEvent', authenticateToken, async (req, res) =>{
-    console.log("im here")
-    //const user = await User.findById(req.body.eventId)
-    const eventStatus = req.user.events.pull({_id: req.body.eventId});
-    await req.user.save()
-    if(!eventStatus){
+router.post('/deleteEvent', authenticateToken, async (req, res) =>{
+    
+    const user = await User.findById(req.user.userId)
+    user.events.pull({
+        _id: req.body.eventId
+    })
+    await user.save()
+    
+    if(!user){
         return res.status(400).json({success: false})
     }
     return res.status(200).json({success: true});
@@ -103,6 +106,7 @@ router.patch('/editEventById', authenticateToken, async (req, res) =>{
     event = {
         title: req.body.title,
         description: req.body.description,
+        date: req.body.date,
         time: req.body.time,
         offset: req.body.offset
     }
