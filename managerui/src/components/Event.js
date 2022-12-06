@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const DELETE_URL = 'api/users/deleteEvent';
 const EDITEVENT_URL = 'api/users/editEventById';
+const EVENT_URL = 'api/users/getEventById';
 
 const Event = (props) =>{
     const [dropStatus, setDropStatus] = useState(false);
@@ -22,11 +23,41 @@ const Event = (props) =>{
     const [offset, setOffset] = useState(0);
     const [offsetFocus, setOffsetFocus] = useState(false);
 
+    const fetchEvent = async()=>{
+        let eventId = props.event._id
+        try {
+            const response = await axios.post(EVENT_URL,
+                JSON.stringify({
+                    eventId
+                }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            });
+            setTitle(response.data.title)
+            setDesc(response.data.desc)
+            setDate(response.data.date)
+            setTime(response.data.time)
+            setOffset(response.data.offset)
+            //setEvents(response.data);
+        } catch (err) {
+            if (!err?.response) {
+                console.log('No Server Response');
+            } else if (err.response?.status === 401) {
+                console.log('Username Taken');
+            } else {
+                console.log('Registration Failed')
+            }
+        }
+    } 
+    useEffect(()=>{
+        fetchEvent()
+    },[])
     
     const handleEditSubmit = async (e) =>{
         let eventId = props.event._id
         try {
-            const response = await axios.patch(EDITEVENT_URL,
+            const response = await axios.post(EDITEVENT_URL,
                 JSON.stringify({
                     eventId,
                     title,
@@ -39,6 +70,7 @@ const Event = (props) =>{
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
+            window.location.reload(false)
             // TODO: remove console.logs before deployment
             //console.log(JSON.stringify(response?.data));
             //console.log(JSON.stringify(response))

@@ -28,7 +28,6 @@ const Login = () => {
     
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log("handling submit!")
         
         try {
             const response = await axios.post(LOGIN_URL,
@@ -52,7 +51,7 @@ const Login = () => {
             if (!err?.response) {
                 setErrMsg('No Server Response');
             } else if (err.response?.status === 400) {
-                setErrMsg('Missing Username or Password');
+                setErrMsg('Incorrect Username or Password');
             } else if (err.response?.status === 401) {
                 setErrMsg('Unauthorized');
             } else {

@@ -27,8 +27,23 @@ router.get('/test', authenticateToken, async(req, res)=>{
     res.status(200).send("success")
 })
 //get event
-router.get('/getEventById', authenticateToken, async (req, res) =>{
-    const event = (await User.findById(req.user.userId)).events.find(req.body.eventId);
+router.post('/getEventById', authenticateToken, async (req, res) =>{
+    const user = await User.findById(req.user.userId)
+    for(let x in user.events){
+        if(user.events[x]._id.toString() === req.body.eventId){
+            return res.status(200).json({
+                title: user.events[x].title,
+                desc: user.events[x].description,
+                date: user.events[x].date,
+                time: user.events[x].time,
+                offset: user.events[x].offset
+            })
+        }
+    }
+
+    res.status(200).json({success: true});
+
+
     if(!event){
         res.status(500).json({success: false});
     } 
@@ -102,19 +117,22 @@ router.post('/deleteEvent', authenticateToken, async (req, res) =>{
     return res.status(200).json({success: true});
 })
 //edit event
-router.patch('/editEventById', authenticateToken, async (req, res) =>{
-    let event = (await User.findById(req.user.userId)).events.find(req.body.eventId);
-    event = {
-        title: req.body.title,
-        description: req.body.description,
-        date: req.body.date,
-        time: req.body.time,
-        offset: req.body.offset
+router.post('/editEventById', authenticateToken, async (req, res) =>{
+
+    const user = await User.findById(req.user.userId)
+    for(let x in user.events){
+        if(user.events[x]._id.toString() === req.body.eventId){
+            user.events[x].set({
+                title: req.body.title,
+                description: req.body.description,
+                date: req.body.date,
+                time: req.body.time,
+                offset: req.body.offset
+            })
+        }
     }
-    await event.save()
-    if(!event){
-        res.status(500).json({success: false});
-    } 
+    await user.save()
+
     res.status(200).json({success: true});
 })
 
