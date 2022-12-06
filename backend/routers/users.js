@@ -86,6 +86,7 @@ router.post('/addMood', authenticateToken, async (req, res) =>{
     }
     return res.status(200).json({success: true});
 })
+
 //remove event
 router.post('/deleteEvent', authenticateToken, async (req, res) =>{
     

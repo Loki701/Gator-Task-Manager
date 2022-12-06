@@ -11,7 +11,14 @@ const EDITEVENT_URL = 'api/users/editEventById';
 const Home = () => {
     const [events, setEvents] = useState([]);
     const [listStatus, setListStatus] = useState(false);
+    const [messageScore, setMessageScore] = useState(null)
     const navigate = useNavigate();
+    const messages = [
+        "Make sure you've reached out to someone you trust if you need emotional support. If you or a friend needs serious support, call 1-800-662-HELP (4357)  to talk to the Substance Abuse and Mental Health Services Administration.",
+        "If you are experiencing a pattern of anxiety or sadness, you may want to check out the UF CWC. The CWC (https://counseling.ufl.edu/) has great resources to support students' mental health. Visit their website to book therapy or attend open sessions.",
+        "Seems like you need a boost. Consider taking care of your mental health by stretching, eating a healthy snack, or spending time with friends today.",
+        "Glad you are feeling great."
+    ]
 
     const fetchEvents = async()=>{
         try {
@@ -40,7 +47,12 @@ const Home = () => {
 
 
     const [mood,setMood] = useState(false);
-    const moodInt = () =>{
+    const moodInt = (e, score) =>{
+        if(score > 3){
+            setMessageScore(4)
+        }else{
+            setMessageScore(score)
+        }
         setMood(true);
     }
 
@@ -91,16 +103,16 @@ const Home = () => {
 
             
         </div>
-        {mood?(<p>Thanks for the input!</p>) : (
+        {mood?(<p className='message-report' >{messages[messageScore-1]}</p>) : (
             <div className='home-footer'>
                 <p className='mood-title'>How are you feeling today?</p>
             
                 <div className='moodTracker'>
-                    <a onClick={moodInt} className='emoji'>😁</a>
-                    <a onClick={moodInt} className='emoji'>🙂</a>
-                    <a onClick={moodInt} className='emoji'>😐</a>
-                    <a onClick={moodInt} className='emoji'>🙁</a>
-                    <a onClick={moodInt} className='emoji'>☹️</a>
+                    <a onClick={(e) =>{moodInt(e,5)}} className='emoji'>😁</a>
+                    <a onClick={(e) =>{moodInt(e,4)}} className='emoji'>🙂</a>
+                    <a onClick={(e) =>{moodInt(e,3)}} className='emoji'>😐</a>
+                    <a onClick={(e) =>{moodInt(e,2)}} className='emoji'>🙁</a>
+                    <a onClick={(e) =>{moodInt(e,1)}} className='emoji'>☹️</a>
                 </div>
             </div>
             )}
