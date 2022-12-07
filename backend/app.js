@@ -6,7 +6,7 @@ const usersRouter = require('./routers/users')
 const authRouter = require('./routers/authentication')
 const errorHandler = require('./helper/error-handler')
 const cookies = require('cookie-parser')
-const port = process.env.PORT || 4044;
+const port = process.env.PORT || 3000;
 
 const app = express();
 const cors = require('cors');

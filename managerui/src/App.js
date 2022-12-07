@@ -4,11 +4,11 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import AddEvent from "./components/AddEvent";
 import EditEvent from "./components/EditEvent";
-//import { ProtectedRoute } from './context/ProtectedRoute'
 
 export default function App() {
   
   return (
+    //routes to different pages
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/Register" element={<Register />} />
@@ -18,11 +18,3 @@ export default function App() {
     </Routes>
   );
 }
-
-{/* <Route 
-      path="/Home" 
-      element={
-      <ProtectedRoute>
-        <Home />
-      </ProtectedRoute>
-      } />*/}
