@@ -6,14 +6,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const dayjs = require('dayjs');
 
-// checks is user exist
+// checks is user exist in the database
 router.get('/validateUser', async (req, res) =>{
     return isUserValid(req.body.username)
 })
-// Register User
+// Register User/ add user credential to the database including hashed password 
 router.post('/register', async (req, res) =>{
-    console.log("in register api")
-    
+   
     if(!isUserValid(req.body.username)) return res.status(400).send({success: false})
 
     let user = new User({
@@ -28,7 +27,7 @@ router.post('/register', async (req, res) =>{
     }
     return res.status(200).send({success: true});
 })
-// Authenticate users credentials 
+// Authenticate users credentials and create a cookie on the client side storing the token needed to make api calls
 router.post('/login', async (req, res) =>{
     let usr = req.body.username.toString();
     const user = await User.findOne({username: usr});
@@ -64,7 +63,7 @@ router.post('/login', async (req, res) =>{
         return res.status(400).send({success: false, issue:'password'})
     }
 })
-// Request new access token
+// Request new access token if the user has a valid refresh token
 router.post('/token', async (req,res) =>{
     const refreshToken = (req.body.token).toString();
     if(refreshToken == null) return res.sendStatus(401).json({success: false})

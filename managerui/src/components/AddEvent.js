@@ -23,13 +23,13 @@ const AddEvent = () => {
     const handleSubmit = async (e) => {
         try {
             const response = await axios.post(ADDEVENT_URL,
-            JSON.stringify({ title, description, date, time, offset}),
+            JSON.stringify({ title, date, time, offset}),
             {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
             // TODO: remove console.logs before deployment
-            console.log(JSON.stringify(response?.data));
+            //console.log(JSON.stringify(response?.data));
             navigate('/Home')
             //console.log(JSON.stringify(response))
     
@@ -65,23 +65,12 @@ const AddEvent = () => {
                 onFocus={() => setTitleFocus(true)}
                 onBlur={() => setTitleFocus(false)}
             />
-            <label htmlFor="Description">Description:</label>
-            <input
-                type="text"
-                id="description"
-                autoComplete="off"
-                onChange={(e) => setDesc(e.target.value)}
-                value={description}
-                onFocus={() => setDescriptionFocus(true)}
-                onBlur={() => setDescriptionFocus(false)}
-            />
             <label htmlFor="Date">Date:</label>
             <input
                 type="date"
                 id="date"
                 autoComplete="off"
                 onChange={(e) => setDate(e.target.value)}
-                value={date}
                 required
                 onFocus={() => setDateFocus(true)}
                 onBlur={() => setDateFocus(false)}

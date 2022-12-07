@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,13 +9,9 @@ const EVENT_URL = 'api/users/getEventById';
 const Event = (props) =>{
     const [dropStatus, setDropStatus] = useState(false);
     const [edit, setEdit] = useState(false)
-    const navigate = useNavigate();
 
-    //
     const [title, setTitle] = useState('');
     const [titleFocus, setTitleFocus] = useState(false);
-    const [description, setDesc] = useState('');
-    const [descriptionFocus, setDescriptionFocus] = useState(false);
     const [date, setDate] = useState();
     const [dateFocus, setDateFocus] = useState(false);
     const [time, setTime] = useState();
@@ -35,7 +31,6 @@ const Event = (props) =>{
                 withCredentials: true
             });
             setTitle(response.data.title)
-            setDesc(response.data.desc)
             setDate(response.data.date)
             setTime(response.data.time)
             setOffset(response.data.offset)
@@ -61,7 +56,6 @@ const Event = (props) =>{
                 JSON.stringify({
                     eventId,
                     title,
-                    description,
                     date,
                     time,
                     offset
@@ -111,7 +105,6 @@ const Event = (props) =>{
             });
             // TODO: remove console.logs before deployment
             //console.log(JSON.stringify(response?.data));
-            console.log(JSON.stringify(response))
             window.location.reload(false)
  
         } catch (err) {
@@ -132,7 +125,9 @@ const Event = (props) =>{
                 </div>
                 <div className='list-item-date'>
                     {props.event.date}
+                    {props.event.time?(' / '+props.event.time):''}
                 </div>
+                
             </button>
             {edit?
             <div className='edit-form'>
@@ -146,16 +141,6 @@ const Event = (props) =>{
                 required
                 onFocus={() => setTitleFocus(true)}
                 onBlur={() => setTitleFocus(false)}
-            />
-            <label htmlFor="Description">Description:</label>
-            <input
-                type="text"
-                id="description"
-                autoComplete="off"
-                onChange={(e) => setDesc(e.target.value)}
-                value={description}
-                onFocus={() => setDescriptionFocus(true)}
-                onBlur={() => setDescriptionFocus(false)}
             />
             <label htmlFor="Date">Date:</label>
             <input

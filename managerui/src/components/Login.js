@@ -37,10 +37,8 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-            console.log(JSON.stringify(response?.data));
+            //console.log(JSON.stringify(response?.data));
             //console.log(JSON.stringify(response));
-            const accessToken = response?.data?.accessToken;
-            console.log()
             //setAuth({ username, password, roles, accessToken });
             if(response.data.success){
                 setUser('');
@@ -66,7 +64,7 @@ const Login = () => {
     return (
         <div className='homepage-container'>
             <div className='title-context'>
-                <img className='logo' src={logo} />
+                <img className='logo' alt='logo' src={logo} />
                 <h1 className='title'>Gator Manager</h1>
             </div>
             {success ? (

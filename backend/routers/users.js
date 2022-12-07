@@ -4,7 +4,6 @@ const router = express.Router();
 
 const authenticateToken = require('../helper/authenticateToken');
 
-//var cookieParser = require('cookie-parser');
 
 //get events
 router.get('/getEvents', authenticateToken, async (req, res) =>{
@@ -18,11 +17,6 @@ router.get('/getEvents', authenticateToken, async (req, res) =>{
 //test cookie
 router.get('/test', authenticateToken, async(req, res)=>{
     console.log("we in test api")
-    // getCookies(function(err,res){
-    //     if(!err){
-    //         console.log(res);
-    //     }
-    // })
     console.log('Cookies: ', req.cookies['api-auth'])
     res.status(200).send("success")
 })
@@ -33,7 +27,6 @@ router.post('/getEventById', authenticateToken, async (req, res) =>{
         if(user.events[x]._id.toString() === req.body.eventId){
             return res.status(200).json({
                 title: user.events[x].title,
-                desc: user.events[x].description,
                 date: user.events[x].date,
                 time: user.events[x].time,
                 offset: user.events[x].offset
@@ -42,12 +35,6 @@ router.post('/getEventById', authenticateToken, async (req, res) =>{
     }
 
     res.status(200).json({success: true});
-
-
-    if(!event){
-        res.status(500).json({success: false});
-    } 
-    res.status(200).send(event);
 })
 //get mood history
 router.get('/getMoodRecord', authenticateToken, async (req, res) =>{
@@ -68,13 +55,12 @@ router.get('/userInfo', authenticateToken, async (req, res) =>{
 })
 //add event 
 router.post('/addEvent', authenticateToken, async (req, res) =>{
-    
+
     const user = await User.findById(req.user.userId)
     //console.log(user.events.find({title: 'Event 1'}))
     console.log(req.user.username)
     user.events.push({
         title: req.body.title,
-        description: req.body.description,
         date: req.body.date,
         time: req.body.time,
         offset: req.body.offset
@@ -124,7 +110,6 @@ router.post('/editEventById', authenticateToken, async (req, res) =>{
         if(user.events[x]._id.toString() === req.body.eventId){
             user.events[x].set({
                 title: req.body.title,
-                description: req.body.description,
                 date: req.body.date,
                 time: req.body.time,
                 offset: req.body.offset
